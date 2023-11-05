@@ -1,3 +1,4 @@
+using Microsoft.OpenApi.Models;
 using TestWebApi;
 
 var builder = WebApplication.CreateBuilder(args);

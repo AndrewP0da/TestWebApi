@@ -69,16 +69,20 @@ namespace TestWebApi.Menu.Services
             entityCategory.DateCreated = TimeZoneInfo.ConvertTimeToUtc(localDateTime, localTimeZone);
             entityCategory.DateUpdated = TimeZoneInfo.ConvertTimeToUtc(localDateTime, localTimeZone);
 
-            entityCategory.Name = category.Name;
-
             var result = await _dbRepository.Add(entityCategory);
-            var resultSave = await _dbRepository.SaveChangesAsync();
+            await _dbRepository.SaveChangesAsync();
 
             return result;
         }
 
-        public async Task<bool> Update(Category category)
+        public async Task<bool> Update(Guid categoryId, string newName)
         {
+            Category category = new()
+            {
+                CategoryId = categoryId,
+                Name = newName
+            };
+
             var entityCategory = await _dbRepository.Get<CategoryEntity>().FirstOrDefaultAsync(x => x.Id == category.CategoryId);
             if (entityCategory != null)
             {
@@ -101,7 +105,7 @@ namespace TestWebApi.Menu.Services
         public async Task Delete(Guid categoryId)
         {
             await _dbRepository.Delete<CategoryEntity>(categoryId);
-            var resultSave = await _dbRepository.SaveChangesAsync();
+            await _dbRepository.SaveChangesAsync();
         }
 
         public async Task<bool> CategoryExists(string categoryName)

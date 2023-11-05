@@ -25,13 +25,13 @@ namespace TestWebApi
                             assembly.MigrationsAssembly("TestWebApi.Migrations"))
             );
 
-            //services.AddAutoMapper(typeof(Startup));
-
             services.AddAutoMapper(cfg =>
             {
                 cfg.CreateMap<Category, CategoryEntity>();
                 cfg.CreateMap<CategoryEntity, Category>();
-                                                           
+                cfg.CreateMap<MenuItem, MenuItemEntity>();
+                cfg.CreateMap<MenuItemEntity, MenuItem>();
+                cfg.CreateMap<MenuItemEntity, MenuItemResponse>();
             });
 
             services.AddScoped<IDbRepository, DbRepository>();

@@ -12,8 +12,8 @@ using TestWebApi.DB;
 namespace TestWebApi.Migrations.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231104221936_DbInitial")]
-    partial class DbInitial
+    [Migration("20231105135344_IDAnitial")]
+    partial class IDAnitial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -31,7 +31,7 @@ namespace TestWebApi.Migrations.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("DateCreated")
+                    b.Property<DateTime?>("DateCreated")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("DateUpdated")
@@ -41,7 +41,8 @@ namespace TestWebApi.Migrations.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.HasKey("Id");
 
@@ -54,13 +55,13 @@ namespace TestWebApi.Migrations.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Composed")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("DateCreated")
+                    b.Property<DateTime?>("DateCreated")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("DateUpdated")

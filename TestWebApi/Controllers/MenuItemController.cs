@@ -20,34 +20,34 @@ namespace TestWebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> Get(Guid id)
         {
-            var lead = await _menuItemService.Get(id);
+            var menuItem = await _menuItemService.Get(id);
 
-            return Ok(lead);
+            return Ok(menuItem);
         }
 
-        [Route("GetAll[controller]")]
+        [Route("GetAll[controller]s")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var lead = await _menuItemService.GetAll();
+            var menuItem = await _menuItemService.GetAll();
 
-            return Ok(lead);
+            return Ok(menuItem);
         }
 
         [Route("Create[controller]")]
         [HttpPost]
         public async Task<IActionResult> Create(MenuItem menuItem)
         {
-            var leadId = await _menuItemService.Create(menuItem);
+            var menuItemId = await _menuItemService.Create(menuItem);
 
-            return Ok(leadId);
+            return Ok(menuItemId);
         }
 
         [Route("Update[controller]")]
         [HttpPut]
-        public async Task<IActionResult> Update(MenuItem menuItem)
+        public async Task<IActionResult> Update(Guid idMenuItem, MenuItem menuItem)
         {
-            await _menuItemService.Update(menuItem);
+            await _menuItemService.Update(idMenuItem, menuItem);
 
             return Ok();
         }

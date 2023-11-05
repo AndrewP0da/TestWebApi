@@ -3,9 +3,8 @@ using System.Text.Json.Serialization;
 
 namespace TestWebApi.Menu.Models
 {
-    public class MenuItem
+    public class MenuItemResponse
     {
-        [JsonIgnore]
         public Guid Id { get; set; }
 
         public string? Name { get; set; }

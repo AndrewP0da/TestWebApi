@@ -9,10 +9,12 @@ namespace TestWebApi.Controllers
     public class CategoryController : BaseController
     {
         private readonly ICategoryService _categoryService;
+        private readonly IMenuItemService _menuItemService;
 
-        public CategoryController(ICategoryService categoryService)
+        public CategoryController(ICategoryService categoryService, IMenuItemService menuItemService)
         {
             _categoryService = categoryService;
+            _menuItemService = menuItemService;
         }
 
         [Route("Get[controller]")]
@@ -20,6 +22,23 @@ namespace TestWebApi.Controllers
         public async Task<IActionResult> Get(Guid id)
         {
             var category = await _categoryService.Get(id);
+            var menuItems = await _menuItemService.GetAll();
+
+            if (category != null)
+            {
+                if (menuItems != null)
+                {
+                    category.MenuItems = new List<MenuItemResponse>();
+
+                    foreach (var menuItem in menuItems)
+                    {
+                        if (menuItem.CategoryId == category.CategoryId)
+                        {
+                            category.MenuItems.Add(menuItem);
+                        }
+                    }
+                }
+            }
 
             return Ok(category);
         }
@@ -30,7 +49,25 @@ namespace TestWebApi.Controllers
         {
             var listCategory = await _categoryService.GetAll();
             if (listCategory == null)
-                return Conflict("Відсутні дані");
+                return Conflict("Відсутні дані категорій меню");
+
+            var menuItems = await _menuItemService.GetAll();
+
+            if (menuItems != null)
+            {
+                foreach (var category in listCategory)
+                {
+                    category.MenuItems = new List<MenuItemResponse>();
+
+                    foreach (var menuItem in menuItems)
+                    {
+                        if (menuItem.CategoryId == category.CategoryId)
+                        {
+                            category.MenuItems.Add(menuItem);
+                        }
+                    }
+                }
+            }
 
             return Ok(listCategory);
         }
@@ -56,9 +93,9 @@ namespace TestWebApi.Controllers
 
         [Route("Update[controller]")]
         [HttpPut]
-        public async Task<IActionResult> Update(Category category)
+        public async Task<IActionResult> Update(Guid categoryId, string newName)
         {
-            var result = await _categoryService.Update(category);
+            var result = await _categoryService.Update(categoryId, newName);
 
             if (result == true)
             {
